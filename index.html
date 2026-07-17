@@ -18,12 +18,13 @@
         </div>
         <nav class="navegacion">
             <ul>
-                <li><a href="index.html" class="activo">Inicio</a></li>
-                <li><a href="#">Poleras</a></li>
-                <li><a href="#">Casacas</a></li>
-                <li><a href="#">Zipper</a></li>
-                <li><a href="#">Buzos</a></li>
-                <li><a href="#">Polos</a></li>
+                <!-- Si no hay parámetro, muestra todo el catálogo -->
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="index.html?categoria=poleras">Poleras</a></li>
+                <li><a href="index.html?categoria=casacas">Casacas</a></li>
+                <li><a href="index.html?categoria=zipper">Zipper</a></li>
+                <li><a href="index.html?categoria=buzos">Buzos</a></li>
+                <li><a href="index.html?categoria=polos">Polos</a></li>
             </ul>
         </nav>
     </header>
@@ -34,7 +35,7 @@
          <!-- BANNER PROMOCIONAL -->
     <section class="hero-banner">
         <!-- Reemplaza 'banner-cross.jpg' con el nombre de tu imagen cuando la exportes -->
-        <img src="img/banner-cros.jpg" alt="Nueva Colección CROSS" class="banner-img">
+        <img src="img/banner-cross.jpg" alt="Nueva Colección CROSS" class="banner-img">
     </section>
         <div id="catalogo-container" class="catalogo-grid">
             <p class="cargando">Cargando colección...</p>

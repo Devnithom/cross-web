@@ -455,3 +455,73 @@ body {
         align-items: center;
     }
 }
+
+/* =========================================
+   ESTILOS DE VISTA DE DETALLE (PDP)
+   ========================================= */
+.producto-detalle-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    background-color: #fff;
+    padding: 3rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.foto-principal-detalle {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+}
+
+.miniaturas {
+    display: flex;
+    gap: 1rem;
+}
+
+.miniatura {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 4px;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: border 0.3s;
+}
+
+.miniatura:hover {
+    border: 2px solid #111;
+}
+
+.titulo-detalle {
+    font-size: 2.2rem;
+    margin: 0.5rem 0 1rem 0;
+    color: #111;
+}
+
+.precio-detalle {
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 1rem;
+}
+
+.descripcion-prenda {
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+
+/* Responsivo para la vista de detalle */
+@media (max-width: 768px) {
+    .producto-detalle-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+        padding: 1.5rem;
+    }
+}

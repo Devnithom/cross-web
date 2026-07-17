@@ -12,20 +12,26 @@ const catalogoContainer = document.getElementById('catalogo-container');
 // Tu número de WhatsApp (con el código 51 de Perú añadido para la API)
 const numeroWhatsApp = '51903232721';
 
-// 3. Función principal asíncrona para obtener los datos
-async function cargarCatalogo() {
+// 3. Función principal asíncrona para obtener los datos (ahora acepta un filtro)
+async function cargarCatalogo(categoriaFiltro = null) {
   try {
-    // Petición a la base de datos
-    const response = await client.getEntries({
-      content_type: 'prenda' // El ID exacto que definimos en el Content Model
-    });
+    // Preparamos la consulta a la base de datos
+    let query = { content_type: 'prenda' }; // 'prenda' es tu Content Type
+    
+    // Si la función recibe una categoría, agregamos el filtro a la consulta
+    if (categoriaFiltro) {
+        query['fields.categoria'] = categoriaFiltro; 
+    }
+
+    // Petición a la base de datos con o sin filtro
+    const response = await client.getEntries(query);
 
     // Limpiamos el texto de "Cargando..."
     catalogoContainer.innerHTML = '';
     const prendas = response.items;
 
     if (prendas.length === 0) {
-      catalogoContainer.innerHTML = '<p class="cargando">Catálogo en actualización.</p>';
+      catalogoContainer.innerHTML = '<p class="cargando">Catálogo en actualización o no hay prendas en esta categoría.</p>';
       return;
     }
 
@@ -90,6 +96,8 @@ async function cargarCatalogo() {
   }
 }
 
+ 
+
 // ==========================================
 // ENRUTADOR (ROUTER) DE LA APLICACIÓN
 // ==========================================
@@ -100,10 +108,28 @@ document.addEventListener('DOMContentLoaded', () => {
     const detalleContainer = document.getElementById('detalle-producto');
 
     if (catalogoContainer) {
-        // Estamos en index.html -> Disparamos tu función asíncrona normal
-        cargarCatalogo();
+        // Leemos la URL para saber si el cliente hizo clic en una categoría del menú
+        const urlParams = new URLSearchParams(window.location.search);
+        const categoriaSeleccionada = urlParams.get('categoria');
+
+        // Disparamos tu función asíncrona enviando la categoría (si existe) o en blanco (si es el inicio)
+        cargarCatalogo(categoriaSeleccionada);
+
+        // Resaltar la pestaña actual en el menú
+        const enlacesMenu = document.querySelectorAll('.navegacion a');
+        enlacesMenu.forEach(enlace => {
+            const href = enlace.getAttribute('href');
+            if (categoriaSeleccionada) {
+                if (href.includes(`categoria=${categoriaSeleccionada}`)) enlace.classList.add('activo');
+            } else {
+                if (href === 'index.html') enlace.classList.add('activo');
+            }
+        });
+
+      
             
     } else if (detalleContainer) {
+        // Estamos en producto.html -> Leemos la URL ... (mantén esta parte intacta)
         // Estamos en producto.html -> Leemos la URL
         const urlParams = new URLSearchParams(window.location.search);
         const idProducto = urlParams.get('id');
@@ -149,4 +175,93 @@ window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda) {
     
     // 5. Reactivar el enlace
     btnWsp.style.pointerEvents = "auto"; 
+};
+
+// ==========================================
+// VISTA DE DETALLE DE PRODUCTO
+// ==========================================
+function cargarVistaDetalle(prenda) {
+    const campos = prenda.fields;
+    const urlFotoPrincipal = 'https:' + campos.fotos[0].fields.file.url;
+    
+    // 1. Armar la galería de imágenes secundaria si existen más fotos
+    let galeriaHTML = `<img src="${urlFotoPrincipal}" alt="${campos.nombre}" class="foto-principal-detalle" id="foto-visor">`;
+    
+    if (campos.fotos.length > 1) {
+        galeriaHTML += '<div class="miniaturas">';
+        campos.fotos.forEach(foto => {
+             const urlMini = 'https:' + foto.fields.file.url;
+             // Al hacer clic en la miniatura, reemplaza la foto principal
+             galeriaHTML += `<img src="${urlMini}" class="miniatura" onclick="document.getElementById('foto-visor').src='${urlMini}'">`;
+        });
+        galeriaHTML += '</div>';
+    }
+
+    // 2. Lógica de tallas
+    let botonesTallas = '';
+    if (campos.enStock && campos.tallas) {
+        campos.tallas.forEach(talla => {
+            botonesTallas += `<button type="button" class="btn-talla" onclick="seleccionarTallaDetalle(event, '${talla}', '${campos.nombre}')">${talla}</button>`;
+        });
+    } else {
+        botonesTallas = '<span style="color:#ff4444; font-weight:bold;">Agotado temporalmente</span>';
+    }
+
+    // Lógica para asignar la tabla de medidas correcta según la categoría
+    // Convertimos la categoría a minúsculas por seguridad (ej. "Poleras" -> "poleras")
+    const categoriaFormateada = (campos.categoria || 'default').toLowerCase().trim();
+    const rutaTablaMedidas = `img/tabla-${categoriaFormateada}.jpg`;
+
+    // 3. Estructura HTML inyectada (Reemplazando la tabla HTML por tu imagen dinámica)
+    const htmlDetalle = `
+        <div class="producto-detalle-grid">
+            <div class="galeria-contenedor">
+                ${galeriaHTML}
+            </div>
+            
+            <div class="info-detalle-contenedor">
+                <span class="categoria">${campos.categoria || 'Catálogo'}</span>
+                <h1 class="titulo-detalle">${campos.nombre}</h1>
+                <p class="precio-detalle">S/ ${campos.precio.toFixed(2)}</p>
+                
+                <div class="descripcion-prenda">
+                    <p>Prendas de alto gramaje con acabados premium. Nuestro algodón reactivo 20/1 no encoge. Revisa la guía de tallas para asegurar tu fit estructurado perfecto.</p>
+                </div>
+                
+                <div class="tallas-selector">
+                    <p style="font-weight: bold; margin-bottom: 0.5rem;">Selecciona tu talla:</p>
+                    <div class="botones-tallas" id="tallas-detalle">
+                        ${botonesTallas}
+                    </div>
+                </div>
+                
+                <a href="#" id="btn-wsp-detalle" class="btn-comprar btn-bloqueado">Elige una talla para pedir</a>
+
+                <!-- Tabla de Medidas (Imagen Dinámica) -->
+                <div class="tabla-medidas">
+                    <h3 style="margin-bottom: 1rem; font-size: 1.1rem;">Guía de Tallas</h3>
+                    <!-- El onerror evita que salga un cuadro roto si olvidaste subir la imagen a la carpeta -->
+                    <img src="${rutaTablaMedidas}" alt="Medidas de ${campos.categoria}" style="width: 100%; height: auto; border-radius: 6px;" onerror="this.style.display='none'">
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.getElementById('detalle-producto').innerHTML = htmlDetalle;
+}
+
+// 4. Lógica del botón WhatsApp para la vista de detalle
+window.seleccionarTallaDetalle = function(event, talla, nombrePrenda) {
+    const botones = document.querySelectorAll('#tallas-detalle .btn-talla');
+    botones.forEach(btn => btn.classList.remove('activa'));
+    event.target.classList.add('activa');
+
+    const btnWsp = document.getElementById('btn-wsp-detalle');
+    btnWsp.classList.remove('btn-bloqueado');
+    btnWsp.innerText = `Pedir talla ${talla} por WhatsApp`;
+    
+    const mensaje = `Hola CROSS, me interesa la prenda: ${nombrePrenda}. Deseo pedir la talla: ${talla}.`;
+    btnWsp.href = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    btnWsp.target = "_blank";
+    btnWsp.style.pointerEvents = "auto";
 };
