@@ -32,27 +32,21 @@ async function cargarCatalogo() {
     // 4. Recorremos los datos y armamos la vista
     prendas.forEach(prenda => {
       const campos = prenda.fields;
-
-      // Extraemos la URL de la primera foto del array de imágenes
+      const idUnico = prenda.sys.id; // ID único de la base de datos
       const urlFoto = 'https:' + campos.fotos[0].fields.file.url;
       
-      // Formateamos las tallas (ej. S, M, L) separadas por comas
-      const tallasDisponibles = campos.tallas ? campos.tallas.join(', ') : 'Única';
-
-      // Lógica de validación de Stock
-      let botonHTML = '';
-      if (campos.enStock) {
-        // Armamos el enlace de WhatsApp dinámico
-        const mensajeWsp = `Hola CROSS, me interesa: ${campos.nombre}. ¿Tienen stock disponible?`;
-        const urlWsp = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensajeWsp)}`;
-        
-        botonHTML = `<a href="${urlWsp}" target="_blank" class="btn-comprar">Pedir por WhatsApp</a>`;
+      // Lógica de Tallas y Stock
+      let botonesTallas = '';
+      if (campos.enStock && campos.tallas && campos.tallas.length > 0) {
+        // Creamos un botón por cada talla disponible en el array
+        campos.tallas.forEach(talla => {
+            botonesTallas += `<button type="button" class="btn-talla" onclick="seleccionarTalla(event, '${idUnico}', '${talla}', '${campos.nombre}')">${talla}</button>`;
+        });
       } else {
-        // Botón bloqueado si el booleano es false
-        botonHTML = `<button class="btn-agotado" disabled>Sin Stock</button>`;
+        botonesTallas = '<span style="color:#ff4444; font-size:0.9rem;">Sin stock temporalmente</span>';
       }
 
-      // 5. Inyectamos la estructura final al DOM (Template String)
+      // 5. Inyectamos la estructura final al DOM
       const articuloHTML = `
         <article class="tarjeta-prenda">
           <img src="${urlFoto}" alt="${campos.nombre}">
@@ -60,8 +54,15 @@ async function cargarCatalogo() {
             <span class="categoria">${campos.categoria || 'Catálogo'}</span>
             <h2>${campos.nombre}</h2>
             <p class="precio">S/ ${campos.precio.toFixed(2)}</p>
-            <p class="tallas">Tallas: ${tallasDisponibles}</p>
-            ${botonHTML}
+            
+            <div class="tallas-selector">
+              <p style="font-size: 0.85rem; color: #aaa;">Selecciona tu talla:</p>
+              <div class="botones-tallas" id="tallas-${idUnico}">
+                ${botonesTallas}
+              </div>
+            </div>
+
+            <a href="#" id="btn-wsp-${idUnico}" class="btn-comprar btn-bloqueado">Elige una talla para pedir</a>
           </div>
         </article>
       `;
@@ -77,3 +78,27 @@ async function cargarCatalogo() {
 
 // 6. Ejecución
 cargarCatalogo();
+
+// Función global para manejar el clic en las tallas
+window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda) {
+    // 1. Quitar el color blanco de cualquier otro botón de talla en este producto
+    const contenedorTallas = document.getElementById(`tallas-${idUnico}`);
+    const botones = contenedorTallas.querySelectorAll('.btn-talla');
+    botones.forEach(btn => btn.classList.remove('activa'));
+
+    // 2. Pintar de blanco el botón que el cliente acaba de tocar
+    event.target.classList.add('activa');
+
+    // 3. Desbloquear el botón de WhatsApp
+    const btnWsp = document.getElementById(`btn-wsp-${idUnico}`);
+    btnWsp.classList.remove('btn-bloqueado');
+    btnWsp.innerText = `Pedir talla ${talla} por WhatsApp`;
+    
+    // 4. Armar el mensaje dinámico para enviarte
+    const mensaje = `Hola CROSS, me interesa la prenda: ${nombrePrenda}. Deseo pedir la talla: ${talla}. ¿Tienen stock disponible para coordinar la entrega?`;
+    btnWsp.href = `https://wa.me/${numeroWhatsApp}?text=${encodeURIComponent(mensaje)}`;
+    btnWsp.target = "_blank"; // Para que abra en una pestaña nueva
+    
+    // 5. Reactivar el enlace
+    btnWsp.style.pointerEvents = "auto"; 
+};
