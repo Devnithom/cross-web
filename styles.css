@@ -345,10 +345,14 @@ body {
 }
 .hero-banner-full img {
     width: 100%;
-    height: auto;
+    /* Limitamos el alto al 60% de la pantalla en PC */
+    height: 60vh; 
+    /* object-fit es clave: recorta la imagen como un marco de fotos sin aplastarla */
+    object-fit: cover; 
+    /* Mantiene el enfoque en el centro de la imagen */
+    object-position: center; 
     display: block;
 }
-
 /* =========================================
    EFECTO HOVER EN PRODUCTOS Y TARJETAS
    ========================================= */
@@ -484,6 +488,11 @@ body {
     .tarjeta-prenda {
         flex: 0 0 85%; /* La tarjeta ocupa el 85% de la pantalla, dejando asomar la siguiente */
         scroll-snap-align: center;
+    }
+
+    /* Limitar el banner en móviles para mostrar productos inmediatamente */
+    .hero-banner-full img {
+        height: 45vh; /* Ocupa menos de la mitad de la pantalla */
     }
 }
 
@@ -626,3 +635,12 @@ body {
     margin: 0;
     text-transform: uppercase;
 }
+
+/* Blindaje del botón flotante en móviles */
+    .btn-flotante-wsp {
+        display: inline-block !important; /* Fuerza su existencia */
+        bottom: 35px !important; /* Lo sube por encima de la barra del navegador */
+        right: 15px !important;
+        z-index: 999999 !important; /* Lo pone por encima de cualquier otro elemento */
+        transform: scale(0.85); /* Lo reduce un 15% para que no tape los productos */
+    }
