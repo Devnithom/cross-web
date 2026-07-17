@@ -102,6 +102,18 @@ async function cargarCatalogo(categoriaFiltro = null) {
 // ENRUTADOR (ROUTER) DE LA APLICACIÓN
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
+  
+  // Activar menú hamburguesa en móviles de forma segura
+    const btnMenu = document.getElementById('btn-menu');
+    const navMenu = document.getElementById('nav-menu');
+    if (btnMenu && navMenu) {
+        btnMenu.addEventListener('click', () => {
+            navMenu.classList.toggle('mostrar');
+        });
+    }
+
+    // Identificamos en qué página estamos
+    const catalogoContainer = document.getElementById('catalogo-container');
     
     // Identificamos en qué página estamos
     const catalogoContainer = document.getElementById('catalogo-container');
@@ -266,11 +278,3 @@ window.seleccionarTallaDetalle = function(event, talla, nombrePrenda) {
     btnWsp.style.pointerEvents = "auto";
 };
 
-// Activar menú hamburguesa en móviles
-const btnMenu = document.getElementById('btn-menu');
-const navMenu = document.getElementById('nav-menu');
-if (btnMenu && navMenu) {
-    btnMenu.addEventListener('click', () => {
-        navMenu.classList.toggle('mostrar');
-    });
-}

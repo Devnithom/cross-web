@@ -424,11 +424,11 @@ body {
 .menu-toggle { display: none; }
 
 @media (max-width: 768px) {
-    /* Ajuste de Cabecera y Menú */
-  /* Menú Hamburguesa */
+   /* Menú Hamburguesa Blindado */
     .header-principal {
-        flex-direction: row; /* Mantiene logo y botón en la misma línea */
+        flex-direction: row; 
         justify-content: space-between;
+        align-items: center;
         padding: 1rem 5%;
         flex-wrap: wrap;
     }
@@ -437,23 +437,30 @@ body {
         font-size: 2rem;
         cursor: pointer;
         color: #111;
+        user-select: none; /* Evita que se sombree azul al tocarlo rápido */
     }
     .navegacion {
         width: 100%;
-        display: none; /* Oculto por defecto en móvil */
+        display: none !important; /* Fuerza a ocultarse siempre */
         margin-top: 1rem;
     }
     .navegacion.mostrar {
-        display: block; /* Se muestra al hacer clic */
+        display: block !important; /* Fuerza a mostrarse al tocar el botón */
     }
     .navegacion ul {
         flex-direction: column;
         gap: 0;
+        text-align: center;
     }
     .navegacion a {
         display: block;
         padding: 1rem 0;
         border-bottom: 1px solid #eee;
+    }
+
+    /* Evitar que el navegador móvil tape el botón de WhatsApp */
+    .btn-flotante-wsp {
+        bottom: 80px; 
     }
     /* Ajuste del Catálogo */
     .contenedor-principal {
