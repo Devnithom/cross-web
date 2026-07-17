@@ -29,16 +29,23 @@ async function cargarCatalogo() {
       return;
     }
 
-    // 4. Recorremos los datos y armamos la vista
+  // 4. Recorremos los datos y armamos la vista
     prendas.forEach(prenda => {
       const campos = prenda.fields;
-      const idUnico = prenda.sys.id; // ID único de la base de datos
+      const idUnico = prenda.sys.id;
+      
+      // Foto 1 (Principal)
       const urlFoto = 'https:' + campos.fotos[0].fields.file.url;
       
-      // Lógica de Tallas y Stock
+      // Lógica para Foto 2 (Efecto Hover): Si subiste una segunda foto a Contentful, la usa. Si no, repite la primera.
+      let urlFotoHover = urlFoto; 
+      if (campos.fotos.length > 1) {
+          urlFotoHover = 'https:' + campos.fotos[1].fields.file.url;
+      }
+      
+      // Lógica de Tallas y Stock (Mantenemos la que ya hicimos)
       let botonesTallas = '';
       if (campos.enStock && campos.tallas && campos.tallas.length > 0) {
-        // Creamos un botón por cada talla disponible en el array
         campos.tallas.forEach(talla => {
             botonesTallas += `<button type="button" class="btn-talla" onclick="seleccionarTalla(event, '${idUnico}', '${talla}', '${campos.nombre}')">${talla}</button>`;
         });
@@ -46,17 +53,20 @@ async function cargarCatalogo() {
         botonesTallas = '<span style="color:#ff4444; font-size:0.9rem;">Sin stock temporalmente</span>';
       }
 
-      // 5. Inyectamos la estructura final al DOM
+      // 5. Inyectamos la estructura final al DOM (Agregamos el contenedor de imágenes)
       const articuloHTML = `
         <article class="tarjeta-prenda">
-          <img src="${urlFoto}" alt="${campos.nombre}">
+          <div class="img-container">
+              <img src="${urlFoto}" alt="${campos.nombre}" class="img-principal">
+              <img src="${urlFotoHover}" alt="${campos.nombre} Detalle" class="img-secundaria">
+          </div>
           <div class="info-prenda">
             <span class="categoria">${campos.categoria || 'Catálogo'}</span>
             <h2>${campos.nombre}</h2>
             <p class="precio">S/ ${campos.precio.toFixed(2)}</p>
             
             <div class="tallas-selector">
-              <p style="font-size: 0.85rem; color: #aaa;">Selecciona tu talla:</p>
+              <p style="font-size: 0.85rem; color: #777;">Selecciona tu talla:</p>
               <div class="botones-tallas" id="tallas-${idUnico}">
                 ${botonesTallas}
               </div>
@@ -68,7 +78,7 @@ async function cargarCatalogo() {
       `;
 
       catalogoContainer.innerHTML += articuloHTML;
-    });
+    }); 
 
   } catch (error) {
     console.error('Error al conectar con la API:', error);

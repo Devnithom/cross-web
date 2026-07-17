@@ -63,7 +63,7 @@ body {
 
 .navegacion ul {
     list-style: none;
-    display: fleX;
+    display: flex;
     gap: 2rem;
 }
 
@@ -76,7 +76,7 @@ body {
     transition: color 0.3s;
 }
 
-.navegacion a:hoveR, .navegacion a.activo {
+.navegacion a:hover, .navegacion a.activo {
     color: #6a6c03; /* Color al pasar el cursor */
     border-bottom: 2px solid #6a6c03; /*Color pasar cursor*/
     padding-bottom: 0.2rem;
@@ -332,4 +332,92 @@ body {
     color: #555;
     cursor: not-allowed;
     pointer-events: none; /* Evita el clic */
+}
+
+/* =========================================
+   HERO BANNER
+   ========================================= */
+.hero-banner {
+    width: 100%;
+    max-width: 1400px;
+    margin: 0 auto 3rem auto; /* Centrado y con margen inferior */
+    border-radius: 8px; /* Pequeño redondeo en los bordes opcional */
+    overflow: hidden; /* Evita que la imagen se salga del contenedor */
+    background-color: #e0e0e0; /* Color temporal de fondo mientras carga la imagen */
+}
+
+.banner-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+}
+
+/* =========================================
+   EFECTO HOVER EN PRODUCTOS Y TARJETAS
+   ========================================= */
+.tarjeta-prenda {
+    background-color: #fff;
+    border-radius: 6px; /* Bordes ligeramente redondeados */
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05); /* Sombra sutil para profundidad */
+    transition: transform 0.3s;
+}
+
+.tarjeta-prenda:hover {
+    transform: translateY(-5px); /* Eleva la tarjeta un poco al pasar el cursor */
+}
+
+/* Contenedor de las dos imágenes */
+.img-container {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 3/4; /* Mantiene proporción vertical ideal para ropa */
+    overflow: hidden;
+    background-color: #f5f5f5; /* Color por defecto mientras carga */
+}
+
+.img-principal, .img-secundaria {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Asegura que la polera llene el espacio sin achatarse */
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* La segunda imagen arranca transparente */
+.img-secundaria {
+    opacity: 0;
+}
+
+/* Al pasar el cursor por la tarjeta entera, revelamos la secundaria */
+.tarjeta-prenda:hover .img-secundaria {
+    opacity: 1;
+}
+
+/* Ajustes limpios para la información debajo de la foto */
+.info-prenda {
+    padding: 1.5rem;
+}
+
+.info-prenda .categoria {
+    font-size: 0.75rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.info-prenda h2 {
+    font-size: 1.1rem;
+    margin: 0.5rem 0;
+    color: #111;
+}
+
+.info-prenda .precio {
+    font-weight: 900;
+    font-size: 1.2rem;
+    color: #0f0f0f;
+    margin-bottom: 1rem;
 }
