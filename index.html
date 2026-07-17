@@ -12,13 +12,15 @@
     <!-- ENCABEZADO (Navegación Superior) -->
     <header class="header-principal">
         <div class="logo-container">
-            <!-- Cuando exportes tu logo de Illustrator, guárdalo en tu carpeta y pon su nombre exacto en el src -->
             <img src="logo-cross.png" alt="Logo CROSS" class="logo-img" onerror="this.style.display='none'"> 
             <h1 class="logo-texto">CROSS</h1>
         </div>
-        <nav class="navegacion">
+        
+        <!-- Botón Hamburguesa -->
+        <div class="menu-toggle" id="btn-menu">☰</div>
+        
+        <nav class="navegacion" id="nav-menu">
             <ul>
-                <!-- Si no hay parámetro, muestra todo el catálogo -->
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="index.html?categoria=poleras">Poleras</a></li>
                 <li><a href="index.html?categoria=casacas">Casacas</a></li>
@@ -27,16 +29,35 @@
                 <li><a href="index.html?categoria=polos">Polos</a></li>
             </ul>
         </nav>
+
     </header>
 
-    <!-- CUERPO PRINCIPAL (Donde irán los productos o banners) -->
-    <main class="contenedor-principal">
-        <!-- Nuestro catálogo dinámico se mantiene aquí adentro -->
-         <!-- BANNER PROMOCIONAL -->
+     <!-- BANNER PROMOCIONAL -->
     <section class="hero-banner">
         <!-- Reemplaza 'banner-cross.jpg' con el nombre de tu imagen cuando la exportes -->
         <img src="img/banner-cross.jpg" alt="Nueva Colección CROSS" class="banner-img">
     </section>
+
+    <!-- SECCIÓN EXPLORA CATEGORÍAS -->
+    <section class="seccion-categorias">
+        <h2 class="titulo-seccion">NUEVA COLECCIÓN<br><span>¡EXPLORA NUESTRAS CATEGORÍAS!</span></h2>
+        <div class="grid-categorias-visual">
+            <!-- Usa fotos reales de tus prendas aquí -->
+            <a href="index.html?categoria=poleras" class="cat-card">
+                <img src="img/cat-poleras.jpg" alt="Poleras">
+                <h3>POLERAS REGULAR</h3>
+            </a>
+            <a href="index.html?categoria=casacas" class="cat-card">
+                <img src="img/cat-casacas.jpg" alt="Casacas">
+                <h3>CASACAS BÁSICAS</h3>
+            </a>
+        </div>
+    </section>
+
+
+    <!-- CUERPO PRINCIPAL (Donde irán los productos o banners) -->
+    <main class="contenedor-principal">
+        <!-- Nuestro catálogo dinámico se mantiene aquí adentro -->
         <div id="catalogo-container" class="catalogo-grid">
             <p class="cargando">Cargando colección...</p>
         </div>
@@ -82,5 +103,8 @@
     <!-- Scripts de Contentful y tu lógica de negocio (INTACTOS) -->
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
     <script src="app.js"></script>
+
+    <!-- Botón Flotante Global -->
+    <a href="https://wa.me/51903232721?text=Hola%20CROSS,%20tengo%20una%20consulta%20general%20sobre%20las%20prendas." class="btn-flotante-wsp" target="_blank">Chat</a>
 </body>
 </html>

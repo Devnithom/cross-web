@@ -337,20 +337,16 @@ body {
 /* =========================================
    HERO BANNER
    ========================================= */
-.hero-banner {
+.hero-banner-full {
     width: 100%;
-    max-width: 1400px;
-    margin: 0 auto 3rem auto; /* Centrado y con margen inferior */
-    border-radius: 8px; /* Pequeño redondeo en los bordes opcional */
-    overflow: hidden; /* Evita que la imagen se salga del contenedor */
-    background-color: #e0e0e0; /* Color temporal de fondo mientras carga la imagen */
+    margin: 0;
+    padding: 0;
+    background-color: #111;
 }
-
-.banner-img {
+.hero-banner-full img {
     width: 100%;
     height: auto;
     display: block;
-    object-fit: cover;
 }
 
 /* =========================================
@@ -425,36 +421,66 @@ body {
 /* =========================================
    DISEÑO RESPONSIVO (MÓVILES Y TABLETS)
    ========================================= */
+.menu-toggle { display: none; }
+
 @media (max-width: 768px) {
     /* Ajuste de Cabecera y Menú */
+  /* Menú Hamburguesa */
     .header-principal {
-        flex-direction: column;
-        gap: 1rem;
-        padding: 1rem;
+        flex-direction: row; /* Mantiene logo y botón en la misma línea */
+        justify-content: space-between;
+        padding: 1rem 5%;
+        flex-wrap: wrap;
+    }
+    .menu-toggle {
+        display: block;
+        font-size: 2rem;
+        cursor: pointer;
+        color: #111;
+    }
+    .navegacion {
+        width: 100%;
+        display: none; /* Oculto por defecto en móvil */
+        margin-top: 1rem;
+    }
+    .navegacion.mostrar {
+        display: block; /* Se muestra al hacer clic */
     }
     .navegacion ul {
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 1rem;
+        flex-direction: column;
+        gap: 0;
     }
-    
+    .navegacion a {
+        display: block;
+        padding: 1rem 0;
+        border-bottom: 1px solid #eee;
+    }
     /* Ajuste del Catálogo */
     .contenedor-principal {
         padding: 1.5rem 5%;
     }
+    /* Carrusel táctil nativo (Scroll Snap) */
     .catalogo-grid {
-        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+        display: flex;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        gap: 1rem;
+        padding-bottom: 1rem;
+        -webkit-overflow-scrolling: touch; /* Suavidad en iPhone */
+    }
+    
+    .catalogo-grid::-webkit-scrollbar {
+        display: none; /* Oculta la barra de desplazamiento fea */
     }
 
-    /* Ajuste del Footer */
-    .footer-contenido {
-        flex-direction: column;
-        text-align: center;
-    }
-    .redes-botones {
-        align-items: center;
+    .tarjeta-prenda {
+        flex: 0 0 85%; /* La tarjeta ocupa el 85% de la pantalla, dejando asomar la siguiente */
+        scroll-snap-align: center;
     }
 }
+
+
 
 /* =========================================
    ESTILOS DE VISTA DE DETALLE (PDP)
@@ -524,4 +550,72 @@ body {
         gap: 2rem;
         padding: 1.5rem;
     }
+}
+
+/* =========================================
+   BOTÓN FLOTANTE WHATSAPP GLOBAL
+   ========================================= */
+.btn-flotante-wsp {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #25d366; /* Verde oficial de WhatsApp */
+    color: white;
+    padding: 12px 20px;
+    border-radius: 50px;
+    font-weight: 900;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+    z-index: 9999; /* Asegura que siempre esté por encima de todo */
+    transition: transform 0.2s ease;
+}
+
+.btn-flotante-wsp:hover {
+    transform: scale(1.05);
+}
+
+/* Cuadrícula de Categorías Visual */
+.seccion-categorias {
+    padding: 3rem 5%;
+    text-align: center;
+    background-color: #fff;
+}
+.titulo-seccion {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #111;
+}
+.titulo-seccion span {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+.grid-categorias-visual {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.cat-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    display: block;
+}
+.cat-card img {
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    display: block;
+}
+.cat-card h3 {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    color: #fff;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8);
+    margin: 0;
+    text-transform: uppercase;
 }

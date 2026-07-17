@@ -265,3 +265,12 @@ window.seleccionarTallaDetalle = function(event, talla, nombrePrenda) {
     btnWsp.target = "_blank";
     btnWsp.style.pointerEvents = "auto";
 };
+
+// Activar menú hamburguesa en móviles
+const btnMenu = document.getElementById('btn-menu');
+const navMenu = document.getElementById('nav-menu');
+if (btnMenu && navMenu) {
+    btnMenu.addEventListener('click', () => {
+        navMenu.classList.toggle('mostrar');
+    });
+}
