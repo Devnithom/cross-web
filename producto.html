@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Prenda | CROSS</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- ENCABEZADO -->
+    <header class="header-principal">
+        <div class="logo-container">
+            <img src="img/logo-cross.png" alt="Logo CROSS" class="logo-img" onerror="this.style.display='none'"> 
+            <h1 class="logo-texto">CROSS</h1>
+        </div>
+        <nav class="navegacion">
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="#">Poleras</a></li>
+                <li><a href="#">Casacas</a></li>
+                <li><a href="#">Zipper</a></li>
+                <li><a href="#">Buzos</a></li>
+                <li><a href="#">Polos</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- CUERPO DEL PRODUCTO INDIVIDUAL -->
+    <main class="contenedor-principal">
+        <!-- Aquí JavaScript inyectará la galería y los detalles -->
+        <div id="detalle-producto" class="producto-layout">
+            <p class="cargando">Cargando información de la prenda...</p>
+        </div>
+    </main>
+
+    <!-- PIE DE PÁGINA -->
+    <footer class="footer-principal">
+        <div class="footer-contenido">
+            <div class="footer-columna">
+                <h2 class="logo-footer">CROSS</h2>
+                <p class="footer-copy">© 2026 CROSS. All rights reserved.</p>
+            </div>
+            <div class="footer-columna">
+                <h3>Acerca de Nosotros</h3>
+                <ul>
+                    <li><a href="#">Nosotros</a></li>
+                    <li><a href="#">Contáctanos</a></li>
+                </ul>
+            </div>
+            <div class="footer-columna">
+                <h3>La Empresa</h3>
+                <ul>
+                    <li><a href="#">Políticas de Privacidad</a></li>
+                    <li><a href="#">Términos y Condiciones</a></li>
+                    <li><a href="#">Libro de Reclamaciones</a></li>
+                </ul>
+            </div>
+            <div class="footer-columna">
+                <h3>Forma parte de la comunidad</h3>
+                <p>contacto@cross.pe</p>
+                <div class="redes-botones">
+                    <a href="#" class="btn-red facebook"><span>f</span> SEGUIR</a>
+                    <a href="#" class="btn-red instagram"><span>ig</span> SEGUIR</a>
+                    <a href="#" class="btn-red tiktok"><span>tk</span> SEGUIR</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>

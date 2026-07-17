@@ -53,16 +53,20 @@ async function cargarCatalogo() {
         botonesTallas = '<span style="color:#ff4444; font-size:0.9rem;">Sin stock temporalmente</span>';
       }
 
-      // 5. Inyectamos la estructura final al DOM (Agregamos el contenedor de imágenes)
+    // 5. Inyectamos la estructura final al DOM (Agregamos el contenedor de imágenes y enlaces)
       const articuloHTML = `
         <article class="tarjeta-prenda">
-          <div class="img-container">
-              <img src="${urlFoto}" alt="${campos.nombre}" class="img-principal">
-              <img src="${urlFotoHover}" alt="${campos.nombre} Detalle" class="img-secundaria">
-          </div>
+          <!-- Hacemos que al tocar la imagen nos lleve a producto.html con el ID -->
+          <a href="producto.html?id=${idUnico}" class="enlace-producto">
+              <div class="img-container">
+                  <img src="${urlFoto}" alt="${campos.nombre}" class="img-principal">
+                  <img src="${urlFotoHover}" alt="${campos.nombre} Detalle" class="img-secundaria">
+              </div>
+          </a>
           <div class="info-prenda">
             <span class="categoria">${campos.categoria || 'Catálogo'}</span>
-            <h2>${campos.nombre}</h2>
+            <!-- Hacemos que el título también sea clickeable -->
+            <h2><a href="producto.html?id=${idUnico}" style="color:inherit; text-decoration:none;">${campos.nombre}</a></h2>
             <p class="precio">S/ ${campos.precio.toFixed(2)}</p>
             
             <div class="tallas-selector">
@@ -86,8 +90,42 @@ async function cargarCatalogo() {
   }
 }
 
-// 6. Ejecución
-cargarCatalogo();
+// ==========================================
+// ENRUTADOR (ROUTER) DE LA APLICACIÓN
+// ==========================================
+document.addEventListener('DOMContentLoaded', () => {
+    
+    // Identificamos en qué página estamos
+    const catalogoContainer = document.getElementById('catalogo-container');
+    const detalleContainer = document.getElementById('detalle-producto');
+
+    if (catalogoContainer) {
+        // Estamos en index.html -> Disparamos tu función asíncrona normal
+        cargarCatalogo();
+            
+    } else if (detalleContainer) {
+        // Estamos en producto.html -> Leemos la URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const idProducto = urlParams.get('id');
+
+        if (idProducto) {
+            detalleContainer.innerHTML = '<p class="cargando">Cargando detalles de la prenda...</p>';
+            
+            // Traemos solo 1 producto por su ID
+            client.getEntry(idProducto)
+                .then(prenda => {
+                    // Por ahora solo mostraremos este texto para confirmar que la conexión fue exitosa
+                    detalleContainer.innerHTML = '<h2>¡Conexión exitosa! Falta armar el diseño de esta vista.</h2>';
+                })
+                .catch(error => {
+                    detalleContainer.innerHTML = '<p>Error al cargar la prenda.</p>';
+                    console.error("Error:", error);
+                });
+        } else {
+            detalleContainer.innerHTML = '<p>No se especificó ningún producto.</p>';
+        }
+    }
+});
 
 // Función global para manejar el clic en las tallas
 window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda) {
