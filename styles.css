@@ -10,6 +10,177 @@ body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
 }
 
+/* =========================================
+   RESETEO BÁSICO Y VARIABLES
+   ========================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif; /* Cambia esto por la tipografía de CROSS luego */
+}
+
+body {
+    background-color: #f5f5f5; /* Fondo claro para contrastar con los productos oscuros */
+    color: #333;
+}
+
+/* =========================================
+   HEADER (Menú de Navegación)
+   ========================================= */
+.header-principal {
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 5%;
+    border-bottom: 2px solid #eee;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* Separación entre tu logo gráfico y el texto */
+    cursor: pointer;
+}
+
+.logo-img {
+    height: 35px; /* Ajusta este valor dependiendo de qué tan alto sea tu vector */
+    width: auto;
+}
+
+.logo-texto {
+    font-size: 2.2rem;
+    font-weight: 900;
+    letter-spacing: -1.5px;
+    color: #333333; /* Negro intenso */
+    /* Para cambiar la fuente en el futuro, modificaremos esta línea importando Google Fonts */
+    font-family: 'Arial', sans-serif; 
+}
+
+.navegacion ul {
+    list-style: none;
+    display: fleX;
+    gap: 2rem;
+}
+
+.navegacion a {
+    text-decoration: none;
+    color: #111111;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-transform: uppercase;
+    transition: color 0.3s;
+}
+
+.navegacion a:hoveR, .navegacion a.activo {
+    color: #6a6c03; /* Color al pasar el cursor */
+    border-bottom: 2px solid #6a6c03; /*Color pasar cursor*/
+    padding-bottom: 0.2rem;
+}
+
+/* =========================================
+   CONTENEDOR PRINCIPAL
+   ========================================= */
+.contenedor-principal {
+    min-height: 70vh; /* Asegura que el footer se quede abajo si hay poco contenido */
+    padding: 3rem 5%;
+}
+
+.catalogo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+/* =========================================
+   FOOTER (Pie de página oscuro)
+   ========================================= */
+.footer-principal {
+    background-color: #0a0a0a;
+    color: #fff;
+    padding: 4rem 5% 2rem 5%;
+}
+
+.footer-contenido {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 2rem;
+    border-bottom: 1px solid #333;
+    padding-bottom: 3rem;
+    margin-bottom: 2rem;
+}
+
+.footer-columna {
+    flex: 1;
+    min-width: 200px;
+}
+
+.logo-footer {
+    font-size: 2.5rem;
+    font-weight: 900;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+.footer-copy {
+    color: #666;
+    font-size: 0.85rem;
+}
+
+.footer-columna h3 {
+    font-size: 1rem;
+    margin-bottom: 1.5rem;
+    color: #ddd;
+}
+
+.footer-columna ul {
+    list-style: none;
+}
+
+.footer-columna ul li {
+    margin-bottom: 0.8rem;
+}
+
+.footer-columna a {
+    color: #888;
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: color 0.3s;
+}
+
+.footer-columna a:hover {
+    color: #fff;
+}
+
+.redes-botones {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    margin-top: 1rem;
+}
+
+.btn-red {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1rem;
+    border-radius: 4px;
+    color: #fff;
+    font-weight: bold;
+    text-decoration: none;
+    font-size: 0.85rem;
+}
+
+/* Colores corporativos de las redes */
+.facebook { background-color: #1877F2; }
+.instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
+.tiktok { background-color: #000; border: 1px solid #333; }
+
 .header {
     text-align: center;
     padding: 4rem 1rem 2rem 1rem;
