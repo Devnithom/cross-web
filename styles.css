@@ -421,3 +421,37 @@ body {
     color: #0f0f0f;
     margin-bottom: 1rem;
 }
+
+/* =========================================
+   DISEÑO RESPONSIVO (MÓVILES Y TABLETS)
+   ========================================= */
+@media (max-width: 768px) {
+    /* Ajuste de Cabecera y Menú */
+    .header-principal {
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+    }
+    .navegacion ul {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 1rem;
+    }
+    
+    /* Ajuste del Catálogo */
+    .contenedor-principal {
+        padding: 1.5rem 5%;
+    }
+    .catalogo-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100%, 1fr));
+    }
+
+    /* Ajuste del Footer */
+    .footer-contenido {
+        flex-direction: column;
+        text-align: center;
+    }
+    .redes-botones {
+        align-items: center;
+    }
+}
