@@ -178,33 +178,6 @@ body {
 .instagram { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
 .tiktok { background-color: #000; border: 1px solid #333; }
 
-.header {
-    text-align: center;
-    padding: 4rem 1rem 2rem 1rem;
-    border-bottom: 1px solid #333;
-}
-
-.header h1 {
-    font-size: 3rem;
-    letter-spacing: 5px;
-    margin-bottom: 0.5rem;
-}
-
-.header p {
-    font-size: 0.9rem;
-    color: #888;
-    letter-spacing: 2px;
-}
-
-.catalogo {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 2rem;
-    padding: 3rem 2rem;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
 .cargando {
     text-align: center;
     grid-column: 1 / -1;
@@ -465,15 +438,33 @@ body {
     .contenedor-principal {
         padding: 1.5rem 5%;
     }
-    /* Carrusel táctil nativo (Scroll Snap) */
+    /* Catálogo de productos en Cuadrícula 2 Columnas (Estilo Ezzeta) */
     .catalogo-grid {
-        display: flex;
-        flex-wrap: nowrap;
-        overflow-x: auto;
-        scroll-snap-type: x mandatory;
-        gap: 1rem;
-        padding-bottom: 1rem;
-        -webkit-overflow-scrolling: touch; /* Suavidad en iPhone */
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Dos columnas */
+        gap: 0.8rem; /* Espacio sutil entre prendas */
+        padding-bottom: 2rem;
+    }
+    
+    .tarjeta-prenda {
+        flex: none;
+        scroll-snap-align: none;
+    }
+
+    .tarjeta-prenda img {
+        height: 220px; /* Altura ajustada para que entren dos columnas sin deformarse */
+    }
+
+    .info-prenda {
+        padding: 0.8rem;
+    }
+
+    .info-prenda h2 {
+        font-size: 0.95rem; /* Letra más pequeña para que no se desborde */
+    }
+
+    .info-prenda .precio {
+        font-size: 1rem;
     }
     
     .catalogo-grid::-webkit-scrollbar {
@@ -740,4 +731,129 @@ body {
     line-height: 1.8;
     font-size: 1.05rem;
     color: #ddd;
+}
+
+/* =========================================
+   VISTA INDIVIDUAL DE PRODUCTO (PDP)
+   ========================================= */
+.pdp-contenedor {
+    max-width: 600px; /* Estilo centrado y limpio */
+    margin: 0 auto;
+    background: #fff;
+}
+
+/* Carrusel de fotos de la prenda */
+.pdp-galeria {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+.pdp-galeria::-webkit-scrollbar { display: none; }
+
+.pdp-galeria img {
+    flex: 0 0 100%;
+    width: 100%;
+    aspect-ratio: 4/5;
+    object-fit: cover;
+    scroll-snap-align: start;
+}
+
+.pdp-info {
+    padding: 2rem 5%;
+}
+
+.pdp-info h1 {
+    font-size: 1.8rem;
+    color: #111;
+    margin-bottom: 0.5rem;
+    text-transform: uppercase;
+}
+
+.pdp-precio {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+}
+
+/* Fila de Tallas y Guía */
+.pdp-tallas-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.btn-guia-tallas {
+    background: none;
+    border: none;
+    color: var(--color-acento);
+    font-weight: bold;
+    font-size: 0.9rem;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+/* =========================================
+   MODAL GUÍA DE TALLAS (Desktop & Mobile)
+   ========================================= */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.6);
+    z-index: 99999;
+    display: none; /* Oculto por defecto */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.activo {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-contenido {
+    background: #fff;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 8px;
+    padding: 2rem;
+    position: relative;
+    transform: translateY(50px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.activo .modal-contenido {
+    transform: translateY(0);
+}
+
+.btn-cerrar-modal {
+    position: absolute;
+    top: 10px; right: 15px;
+    font-size: 1.5rem;
+    background: none; border: none;
+    cursor: pointer; color: #111;
+}
+
+.modal-contenido img {
+    width: 100%;
+    height: auto;
+    display: block;
+    margin-top: 1rem;
+}
+
+/* Efecto Bottom Sheet para Celulares */
+@media (max-width: 768px) {
+    .modal-overlay {
+        align-items: flex-end; /* Lo tira hacia abajo */
+    }
+    .modal-contenido {
+        width: 100%;
+        border-radius: 20px 20px 0 0; /* Bordes redondos solo arriba */
+        padding: 2rem 1.5rem;
+        transform: translateY(100%); /* Escondido abajo */
+    }
 }

@@ -140,7 +140,7 @@ window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda, categori
     const tipo = (categoriaPrenda || 'PRENDA').toUpperCase();
     
     // El mensaje ahora es completamente específico
-    const mensaje = `Hola CROSS, me interesa la siguiente prenda: ${tipo} ${nombrePrenda}. Deseo pedir la talla: ${talla}. ¿Tienen stock disponible para coordinar la entrega en tienda?`;
+    const mensaje = `Hola CROSS, me interesa la siguiente prenda: ${tipo} ${nombrePrenda}. Deseo pedir la talla: ${talla}. ¿Tienen stock disponible para coordinar la entrega`;
     
     btnWsp.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
     btnWsp.target = "_blank"; 
@@ -148,25 +148,92 @@ window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda, categori
 };
 
 // ==========================================
-// 5. ENRUTADOR (ROUTER) PRINCIPAL
+// 5. RENDERIZADO VISTA INDIVIDUAL (PDP)
+// ==========================================
+function renderizarVistaDetalle(prenda) {
+    const contenedor = document.getElementById('detalle-producto');
+    const campos = prenda.fields;
+    const idUnico = prenda.sys.id;
+    const categoriaFormateada = (campos.categoria || 'prenda').toLowerCase().trim();
+    
+    // Armar el carrusel de imágenes de la prenda
+    let galeriaHTML = '';
+    campos.fotos.forEach(foto => {
+        galeriaHTML += `<img src="https:${foto.fields.file.url}" alt="${campos.nombre}">`;
+    });
+
+    // Armar botones de tallas
+    let botonesTallas = '';
+    if (campos.enStock && campos.tallas && campos.tallas.length > 0) {
+        campos.tallas.forEach(talla => {
+            botonesTallas += `<button type="button" class="btn-talla" onclick="seleccionarTalla(event, '${idUnico}', '${talla}', '${campos.nombre}', '${categoriaFormateada}')">${talla}</button>`;
+        });
+    } else {
+        botonesTallas = '<span style="color:#ff4444; font-weight:bold;">Agotado temporalmente</span>';
+    }
+
+    const html = `
+        <div class="pdp-contenedor">
+            <div class="pdp-galeria">
+                ${galeriaHTML}
+            </div>
+            
+            <div class="pdp-info">
+                <h1>${campos.nombre}</h1>
+                <p class="pdp-precio">S/ ${campos.precio.toFixed(2)}</p>
+                
+                <div class="pdp-tallas-header">
+                    <span style="font-size: 0.9rem; color: #555;">Selecciona tu talla:</span>
+                    <button class="btn-guia-tallas" onclick="abrirModalTallas()">📏 Guía de Tallas</button>
+                </div>
+                
+                <div class="botones-tallas" id="tallas-${idUnico}" style="margin-bottom: 2rem;">
+                    ${botonesTallas}
+                </div>
+                
+                <a href="#" id="btn-wsp-${idUnico}" class="btn-comprar btn-bloqueado" style="width: 100%; padding: 1rem; font-size: 1.1rem;">Elige una talla</a>
+            </div>
+        </div>
+
+        <!-- Componente Modal de Tallas Oculto -->
+        <div class="modal-overlay" id="modal-tallas">
+            <div class="modal-contenido">
+                <button class="btn-cerrar-modal" onclick="cerrarModalTallas()">✕</button>
+                <h3 style="text-align: center;">Medidas de ${categoriaFormateada.toUpperCase()}</h3>
+                <!-- Carga la imagen dinámicamente según la categoría de la prenda actual -->
+                <img src="img/tabla-${categoriaFormateada}.jpg" alt="Guía de tallas" onerror="this.onerror=null; this.src='img/logo-cross.png';">
+            </div>
+        </div>
+    `;
+    
+    contenedor.innerHTML = html;
+}
+
+// Funciones para controlar el Modal
+window.abrirModalTallas = () => document.getElementById('modal-tallas').classList.add('activo');
+window.cerrarModalTallas = () => document.getElementById('modal-tallas').classList.remove('activo');
+
+// Cerrar modal tocando fuera de la caja blanca
+document.addEventListener('click', (e) => {
+    const modal = document.getElementById('modal-tallas');
+    if (e.target === modal) cerrarModalTallas();
+});
+
+// ==========================================
+// 6. ENRUTADOR (ROUTER) PRINCIPAL
 // ==========================================
 document.addEventListener('DOMContentLoaded', () => {
     
-    // Lógica del Menú Hamburguesa
     const btnMenu = document.getElementById('btn-menu');
     if (btnMenu && UI.elementos.navMenu) {
-        btnMenu.addEventListener('click', () => {
-            UI.elementos.navMenu.classList.toggle('mostrar');
-        });
+        btnMenu.addEventListener('click', () => UI.elementos.navMenu.classList.toggle('mostrar'));
     }
 
-    // Lógica de Vistas
     const detalleContainer = document.getElementById('detalle-producto');
     const urlParams = new URLSearchParams(window.location.search);
+    const categoriaSeleccionada = urlParams.get('categoria');
     
     if (UI.elementos.catalogoContenedor) {
-        const categoriaSeleccionada = urlParams.get('categoria');
-
         if (categoriaSeleccionada) {
             UI.renderizarCategoria();
             cargarCatalogo(categoriaSeleccionada);
@@ -178,13 +245,11 @@ document.addEventListener('DOMContentLoaded', () => {
     } else if (detalleContainer) {
         const idProducto = urlParams.get('id');
         if (idProducto) {
-            detalleContainer.innerHTML = '<p class="cargando">Cargando detalles de la prenda...</p>';
+            detalleContainer.innerHTML = '<p class="cargando" style="margin-top: 5rem;">Cargando detalles...</p>';
             client.getEntry(idProducto)
-                .then(prenda => {
-                    detalleContainer.innerHTML = '<h2>¡Conexión exitosa! Falta armar la vista individual de producto.</h2>';
-                })
+                .then(prenda => renderizarVistaDetalle(prenda))
                 .catch(error => {
-                    detalleContainer.innerHTML = '<p>Error al cargar la prenda.</p>';
+                    detalleContainer.innerHTML = '<p class="cargando">Error al cargar la prenda. Intenta nuevamente.</p>';
                 });
         }
     }
