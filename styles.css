@@ -490,8 +490,7 @@ body {
 
     /* Limitar el banner en móviles para mostrar productos inmediatamente */
     .hero-banner-full img {
-        height: 45vh !important; 
-        object-fit: cover;
+        height: 45vh; /* Ocupa menos de la mitad de la pantalla */
     }
 }
 
