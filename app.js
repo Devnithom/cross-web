@@ -88,8 +88,8 @@ async function cargarCatalogo(categoriaFiltro = null) {
             let botonesTallas = '';
             if (campos.enStock && campos.tallas && campos.tallas.length > 0) {
                 campos.tallas.forEach(talla => {
-                    botonesTallas += `<button type="button" class="btn-talla" onclick="seleccionarTalla(event, '${idUnico}', '${talla}', '${campos.nombre}')">${talla}</button>`;
-                });
+                    botonesTallas += `<button type="button" class="btn-talla" onclick="seleccionarTalla(event, '${idUnico}', '${talla}', '${campos.nombre}', '${campos.categoria || 'Prenda'}')">${talla}</button>`;
+                }); 
             } else {
                 botonesTallas = '<span style="color:#ff4444; font-size:0.9rem;">Sin stock temporalmente</span>';
             }
@@ -126,7 +126,7 @@ async function cargarCatalogo(categoriaFiltro = null) {
 // ==========================================
 // 4. FUNCIONES GLOBALES DE INTERACCIÓN
 // ==========================================
-window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda) {
+window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda, categoriaPrenda) {
     const contenedorTallas = document.getElementById(`tallas-${idUnico}`);
     const botones = contenedorTallas.querySelectorAll('.btn-talla');
     botones.forEach(btn => btn.classList.remove('activa'));
@@ -136,7 +136,12 @@ window.seleccionarTalla = function(event, idUnico, talla, nombrePrenda) {
     btnWsp.classList.remove('btn-bloqueado');
     btnWsp.innerText = `Pedir talla ${talla} por WhatsApp`;
     
-    const mensaje = `Hola CROSS, me interesa la prenda: ${nombrePrenda}. Deseo pedir la talla: ${talla}. ¿Tienen stock disponible para coordinar la entrega en tienda?`;
+    // Formateamos la categoría para que resalte (ej. POLERAS)
+    const tipo = (categoriaPrenda || 'PRENDA').toUpperCase();
+    
+    // El mensaje ahora es completamente específico
+    const mensaje = `Hola CROSS, me interesa la siguiente prenda: ${tipo} ${nombrePrenda}. Deseo pedir la talla: ${talla}. ¿Tienen stock disponible para coordinar la entrega en tienda?`;
+    
     btnWsp.href = `https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`;
     btnWsp.target = "_blank"; 
     btnWsp.style.pointerEvents = "auto"; 
