@@ -126,22 +126,24 @@ document.addEventListener('DOMContentLoaded', () => {
     // Activar menú hamburguesa en móviles
     const btnMenu = document.getElementById('btn-menu');
     const navMenu = document.getElementById('nav-menu');
-    if (btnMenu && navMenu) {
-        btnMenu.addEventListener('click', () => {
-            navMenu.classList.toggle('mostrar');
-        });
-    }
-
-    // Identificar la vista actual
-    const catalogoContainer = document.getElementById('catalogo-container');
-    const detalleContainer = document.getElementById('detalle-producto');
-
     if (catalogoContainer) {
+        const mainCatalogo = document.getElementById('main-catalogo');
+        const seccionHistoria = document.getElementById('seccion-historia');
         const urlParams = new URLSearchParams(window.location.search);
         const categoriaSeleccionada = urlParams.get('categoria');
 
-        cargarCatalogo(categoriaSeleccionada);
+        if (categoriaSeleccionada) {
+            // Si el cliente hizo clic en una categoría: Ocultar historia, Mostrar catálogo
+            if (seccionHistoria) seccionHistoria.style.display = 'none';
+            if (mainCatalogo) mainCatalogo.style.display = 'block';
+            cargarCatalogo(categoriaSeleccionada);
+        } else {
+            // Si está en el inicio limpio: Mostrar historia, Ocultar catálogo
+            if (seccionHistoria) seccionHistoria.style.display = 'flex';
+            if (mainCatalogo) mainCatalogo.style.display = 'none';
+        }
 
+        // Resaltar menú superior
         const enlacesMenu = document.querySelectorAll('.navegacion a');
         enlacesMenu.forEach(enlace => {
             const href = enlace.getAttribute('href');
@@ -151,6 +153,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (href === 'index.html' || href === '') enlace.classList.add('activo');
             }
         });
+            
+    } else if (detalleContainer) { // ... (el resto queda igual)   
             
     } else if (detalleContainer) {
         const urlParams = new URLSearchParams(window.location.search);

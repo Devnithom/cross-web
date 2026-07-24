@@ -32,32 +32,41 @@
 
     </header>
 
-     <!-- BANNER PROMOCIONAL -->
-    <section class="hero-banner">
-        <!-- Reemplaza 'banner-cross.jpg' con el nombre de tu imagen cuando la exportes -->
-        <img src="img/banner-cross.jpg" alt="Nueva Colección CROSS" class="banner-img">
-    </section>
-
-    <!-- SECCIÓN EXPLORA CATEGORÍAS -->
+    <!-- SECCIÓN EXPLORA CATEGORÍAS (CARRUSEL) -->
     <section class="seccion-categorias">
         <h2 class="titulo-seccion">NUEVA COLECCIÓN<br><span>¡EXPLORA NUESTRAS CATEGORÍAS!</span></h2>
-        <div class="grid-categorias-visual">
-            <!-- Usa fotos reales de tus prendas aquí -->
+        <!-- Contenedor con efecto de deslizamiento horizontal -->
+        <div class="grid-categorias-visual" id="carrusel-categorias">
+            <!-- Añade tantas tarjetas como necesites aquí -->
             <a href="index.html?categoria=poleras" class="cat-card">
-                <img src="img/cat-poleras.jpg" alt="Poleras">
+                <img src="img/cat-poleras.jpg" alt="Poleras Regular">
                 <h3>POLERAS REGULAR</h3>
             </a>
             <a href="index.html?categoria=casacas" class="cat-card">
-                <img src="img/cat-casacas.jpg" alt="Casacas">
+                <img src="img/cat-casacas.jpg" alt="Casacas Básicas">
                 <h3>CASACAS BÁSICAS</h3>
+            </a>
+            <a href="index.html?categoria=zipper" class="cat-card">
+                <img src="img/cat-zipper.jpg" alt="Poleras Zipper">
+                <h3>POLERAS ZIPPER</h3>
+            </a>
+            <a href="index.html?categoria=buzos" class="cat-card">
+                <img src="img/cat-buzos.jpg" alt="Buzos">
+                <h3>BUZOS</h3>
             </a>
         </div>
     </section>
 
+    <!-- SECCIÓN HISTORIA / TIENDA (Solo visible en el Inicio) -->
+    <section class="historia-tienda" id="seccion-historia">
+        <div class="historia-overlay">
+            <h2>NUESTRA ESENCIA</h2>
+            <p>CROSS nace de la visión de crear prendas con un corte clásico y una estética minimalista. Diseñamos para quienes buscan estructura y acabados premium. Visítanos en nuestra tienda física en Jirón Ayacucho para conocer de cerca nuestro fit y la calidad de nuestro algodón reactivo.</p>
+        </div>
+    </section>
 
-    <!-- CUERPO PRINCIPAL (Donde irán los productos o banners) -->
-    <main class="contenedor-principal">
-        <!-- Nuestro catálogo dinámico se mantiene aquí adentro -->
+    <!-- CUERPO PRINCIPAL (Catálogo dinámico, inicialmente oculto) -->
+    <main class="contenedor-principal" id="main-catalogo" style="display: none;">
         <div id="catalogo-container" class="catalogo-grid">
             <p class="cargando">Cargando colección...</p>
         </div>

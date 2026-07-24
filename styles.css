@@ -644,3 +644,105 @@ body {
         z-index: 999999 !important; /* Lo pone por encima de cualquier otro elemento */
         transform: scale(0.85); /* Lo reduce un 15% para que no tape los productos */
     }
+
+/* =========================================
+   CARRUSEL DE CATEGORÍAS Y FOTO DE TIENDA
+   ========================================= */
+.seccion-categorias {
+    padding: 3rem 5%;
+    text-align: center;
+    background-color: #fff;
+}
+.titulo-seccion {
+    font-size: 1.8rem;
+    margin-bottom: 2rem;
+    color: #111;
+}
+.titulo-seccion span {
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+/* El motor del carrusel táctil */
+.grid-categorias-visual {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 1.5rem; /* Espaciado entre fotos */
+    padding-bottom: 1rem;
+    -webkit-overflow-scrolling: touch;
+}
+.grid-categorias-visual::-webkit-scrollbar {
+    display: none; /* Oculta la barra gris del navegador */
+}
+
+/* Tarjetas de modelos */
+.cat-card {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    display: block;
+    flex: 0 0 85%; /* Ocupa el 85% de la pantalla en celular, igual que tus poleras */
+    scroll-snap-align: center;
+}
+
+@media (min-width: 769px) {
+    .cat-card {
+        flex: 0 0 30%; /* En laptop caben 3 juntas sin hacer tanto scroll */
+    }
+}
+
+.cat-card img {
+    width: 100%;
+    aspect-ratio: 3/4; /* Proporción ideal para fotos de modelos cuerpo entero */
+    object-fit: cover;
+    display: block;
+}
+
+.cat-card h3 {
+    position: absolute;
+    bottom: 15px;
+    left: 15px;
+    color: #fff;
+    font-size: 1.1rem;
+    text-shadow: 1px 1px 4px rgba(0,0,0,0.8); /* Sombra para que se lea sobre cualquier ropa */
+    margin: 0;
+    text-transform: uppercase;
+}
+
+/* =========================================
+   SECCIÓN DE HISTORIA CROSS (TIENDA)
+   ========================================= */
+.historia-tienda {
+    position: relative;
+    width: 100%;
+    height: 70vh; /* Altura del bloque */
+    /* Guarda una foto del interior o fachada de tu tienda con este nombre en tu carpeta img */
+    background-image: url('img/tienda-cross.jpg'); 
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    margin-bottom: 3rem;
+}
+.historia-overlay {
+    background-color: rgba(15, 15, 15, 0.85); /* Caja oscura transparente */
+    padding: 3rem 2rem;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 700px;
+}
+.historia-overlay h2 {
+    font-size: 2.2rem;
+    margin-bottom: 1rem;
+    letter-spacing: 2px;
+    color: #fff;
+}
+.historia-overlay p {
+    line-height: 1.8;
+    font-size: 1.05rem;
+    color: #ddd;
+}
