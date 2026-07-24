@@ -345,12 +345,10 @@ body {
 }
 .hero-banner-full img {
     width: 100%;
-    /* Limitamos el alto al 60% de la pantalla en PC */
-    height: 60vh; 
-    /* object-fit es clave: recorta la imagen como un marco de fotos sin aplastarla */
-    object-fit: cover; 
-    /* Mantiene el enfoque en el centro de la imagen */
-    object-position: center; 
+    height: auto; /* Permite que la imagen crezca proporcionalmente mostrando todo el contenido en PC */
+    max-height: 80vh; /* Pone un límite para que no sea inmensa si subes una foto cuadrada */
+    object-fit: cover;
+    object-position: center;
     display: block;
 }
 /* =========================================
@@ -492,7 +490,8 @@ body {
 
     /* Limitar el banner en móviles para mostrar productos inmediatamente */
     .hero-banner-full img {
-        height: 45vh; /* Ocupa menos de la mitad de la pantalla */
+        height: 45vh !important; 
+        object-fit: cover;
     }
 }
 
