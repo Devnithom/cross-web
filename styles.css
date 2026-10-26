@@ -555,26 +555,48 @@ body {
 }
 
 /* =========================================
-   BOTÓN FLOTANTE WHATSAPP GLOBAL
+   BOTÓN FLOTANTE WHATSAPP CIRCULAR
    ========================================= */
-.btn-flotante-wsp {
+.btn-wsp-flotante {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background-color: #25d366; /* Verde oficial de WhatsApp */
-    color: white;
-    padding: 12px 20px;
-    border-radius: 50px;
-    font-weight: 900;
-    text-transform: uppercase;
+    bottom: 25px;
+    right: 25px;
+    width: 58px;
+    height: 58px;
+    background-color: #25D366; /* Verde oficial de WhatsApp */
+    color: #ffffff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.35);
+    z-index: 9999;
     text-decoration: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-    z-index: 9999; /* Asegura que siempre esté por encima de todo */
-    transition: transform 0.2s ease;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, background-color 0.25s ease;
 }
 
-.btn-flotante-wsp:hover {
-    transform: scale(1.05);
+.btn-wsp-flotante:hover {
+    transform: scale(1.1);
+    background-color: #20ba5a;
+    box-shadow: 0 6px 20px rgba(37, 211, 102, 0.45);
+}
+
+.wsp-icono-svg {
+    width: 32px;
+    height: 32px;
+}
+
+@media (max-width: 768px) {
+    .btn-wsp-flotante {
+        bottom: 20px;
+        right: 20px;
+        width: 52px;
+        height: 52px;
+    }
+    .wsp-icono-svg {
+        width: 28px;
+        height: 28px;
+    }
 }
 
 /* Cuadrícula de Categorías Visual */
@@ -649,18 +671,47 @@ body {
     font-weight: 400;
 }
 
-/* El motor del carrusel táctil */
+/* =========================================
+   CARRUSEL DE CATEGORÍAS (BARRA VISIBLE)
+   ========================================= */
+
+/* Unificamos el contenedor y forzamos el scrollbar visible */
 .grid-categorias-visual {
     display: flex;
     flex-wrap: nowrap;
-    overflow-x: auto;
+    overflow-x: scroll; /* Garantiza que el riel de desplazamiento exista siempre */
     scroll-snap-type: x mandatory;
-    gap: 1.5rem; /* Espaciado entre fotos */
-    padding-bottom: 1rem;
+    gap: 1.5rem;
+    padding-bottom: 1.2rem;
     -webkit-overflow-scrolling: touch;
+    
+    /* Soporte para Firefox (barra gris visible) */
+    scrollbar-width: thin;
+    scrollbar-color: #666666 #e0e0e0;
 }
+
+/* Estilo del riel y deslizador para Chrome, Edge y Brave */
 .grid-categorias-visual::-webkit-scrollbar {
-    display: none; /* Oculta la barra gris del navegador */
+    height: 8px; /* Altura ideal para agarrar con el mouse */
+}
+
+.grid-categorias-visual::-webkit-scrollbar-track {
+    background: #e6e6e6; /* Canal base gris claro contrastado */
+    border-radius: 6px;
+}
+
+.grid-categorias-visual::-webkit-scrollbar-thumb {
+    background: #555555; /* Deslizador gris oscuro visible */
+    border-radius: 6px;
+    cursor: grab;
+}
+
+.grid-categorias-visual::-webkit-scrollbar-thumb:hover {
+    background: #111111; /* Se oscurece al pasar el cursor */
+}
+
+.grid-categorias-visual::-webkit-scrollbar-thumb:active {
+    cursor: grabbing;
 }
 
 /* Tarjetas de modelos */
@@ -669,19 +720,19 @@ body {
     border-radius: 8px;
     overflow: hidden;
     display: block;
-    flex: 0 0 85%; /* Ocupa el 85% de la pantalla en celular, igual que tus poleras */
+    flex: 0 0 85%;
     scroll-snap-align: center;
 }
 
 @media (min-width: 769px) {
     .cat-card {
-        flex: 0 0 30%; /* En laptop caben 3 juntas sin hacer tanto scroll */
+        flex: 0 0 30%;
     }
 }
 
 .cat-card img {
     width: 100%;
-    aspect-ratio: 3/4; /* Proporción ideal para fotos de modelos cuerpo entero */
+    aspect-ratio: 3/4;
     object-fit: cover;
     display: block;
 }
@@ -692,9 +743,10 @@ body {
     left: 15px;
     color: #fff;
     font-size: 1.1rem;
-    text-shadow: 1px 1px 4px rgba(0,0,0,0.8); /* Sombra para que se lea sobre cualquier ropa */
+    text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
     margin: 0;
     text-transform: uppercase;
+    z-index: 5;
 }
 
 /* =========================================
@@ -856,4 +908,44 @@ body {
         padding: 2rem 1.5rem;
         transform: translateY(100%); /* Escondido abajo */
     }
+}
+
+/* =========================================
+   BOTÓN "VER CATÁLOGO" (GLASSMORPHISM ELEGANTE)
+   ========================================= */
+.btn-cta-catalogo {
+    position: absolute !important;
+    top: 50% !important;
+    left: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    z-index: 10 !important;
+    
+    /* Fondo translúcido tipo cristal esmerilado */
+    background-color: rgba(20, 20, 20, 0.4) !important; 
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px); /* Vital para Safari y móviles */
+    
+    /* Tipografía y bordes refinados */
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.45) !important;
+    padding: 0.7rem 1.4rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    border-radius: 30px; /* Estilo píldora moderno */
+    white-space: nowrap;
+    text-decoration: none !important;
+    pointer-events: none; 
+    
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+/* Efecto hover interactivo en ordenadores */
+.cat-card:hover .btn-cta-catalogo {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+    color: #0f0f0f !important;
+    border-color: rgba(255, 255, 255, 0.9) !important;
+    transform: translate(-50%, -50%) scale(1.05) !important;
 }
